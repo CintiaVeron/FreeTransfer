@@ -4,7 +4,7 @@ from django.urls import path
 
 
 from . import views
-from .views import UsuarioDeleteView
+from .views import UsuarioDeleteView,UsuarioFavorito
 
 app_name = 'usuarios'
 
@@ -24,6 +24,8 @@ urlpatterns = [
     path('listado_usuarios/', views.listar_usuarios,name='listado_usuarios'),
     path('movimiento_por_usuario/<int:pk>/', views.Listar_MovimientosPorUsuario,name='movimiento_por_usuario'),
     path('usuariodenegadp/', views.Listar_MovimientosPorUsuario, name='usuariodenegadp'),
+    path('favoritos/', views.Listar.as_view(), name='favoritos'),
+    path('eliminar_favorito/<int:usuario_favorito_id>/', views.eliminar_favorito, name='eliminar_favorito'),
 
     #path('editar_perfil/<str:pk>', views.EditarPerfil_clase.as_view(template_name= "editarperfil.html"), name='editar_perfil' ),
     path('editar_perfil/<str:pk>/', views.EditarPerfil_clase.as_view(), name='editar_perfil'),

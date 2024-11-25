@@ -87,6 +87,38 @@ class Transferencia(models.Model):
 
 
 
+class UsuarioFavorito(models.Model):
+    usuario_origen = models.ForeignKey(
+        Usuario, 
+        on_delete=models.CASCADE, 
+        related_name="favoritos_origen"
+    )
+    
+    usuario_favorito = models.ForeignKey(
+        Usuario, 
+        on_delete=models.CASCADE, 
+        related_name="es_favorito_de"
+    )
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['usuario_origen', 'usuario_favorito'], 
+                name='unique_favorito'
+            )
+        ]
+
+    def clean(self):
+        # Evitar que un usuario se agregue a sí mismo como favorito
+        if self.usuario_origen == self.usuario_favorito:
+            raise ValidationError("No puedes agregarte a ti mismo como favorito.")
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Llama a las validaciones antes de guardar
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Usuario origen: {self.usuario_origen} -- Usuario Favorito: {self.usuario_favorito}"
 
 
     

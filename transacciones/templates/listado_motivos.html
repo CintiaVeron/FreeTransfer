@@ -26,7 +26,9 @@
 				<div _ngcontent-c4="" class="col-12 col-xl-12 mb-4 align-items-stretch">
 					<div _ngcontent-c4="" class="card h-100 border-0 rounded-0">
 						<div _ngcontent-c4="" class="card-title mb-1 p-3 d-flex">
-							<h5 class="card-header">LISTADO DE MOTIVOS </h5> <a href="{% url 'transacciones:crear_motivo' %}" type="button" class="btn btn-danger btn-sm">Agregar Nuevo</a>
+							<h5 class="card-header">LISTADO DE MOTIVOS </h5>
+							 <a href="{% url 'transacciones:crear_motivo' %}" type="button" class="btn btn-primary">Agregar Nuevo</a>
+							 <button type="button" class="btn btn-primary" onclick="window.history.back()">Volver</button>
 							<a _ngcontent-c4="" class="btn ml-auto p-0 text-lightning">
 								<i _ngcontent-c4="" class="fas fa-ellipsis-h"></i>
 							</a>
@@ -51,10 +53,10 @@
 														<td _ngcontent-c4="">{{p.id}}</td>
 														<td _ngcontent-c4="" class="number">{{ p.nombre }}</td>
 														<td _ngcontent-c4="" class="actions">
-															<a href="{% url 'transacciones:modificar_motivo' p.id %}" type="button" class="btn btn-danger btn-sm">EDITAR</a>
+															<a href="{% url 'transacciones:modificar_motivo' p.id %}" type="button" class="btn btn-primary">EDITAR</a>
 														</td>
 														<td _ngcontent-c4="" class="actions">
-															<a href="{% url 'transacciones:eliminar_motivo' p.id %}" type="button" class="btn btn-danger btn-sm">ELIMINAR</a>
+															<a href="{% url 'transacciones:eliminar_motivo' p.id %}" type="button" class="btn btn-primary">ELIMINAR</a>
 														</td>
 													</tr>
 											{% endfor %} 

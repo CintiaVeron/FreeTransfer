@@ -29,6 +29,7 @@
 					<div _ngcontent-c4="" class="card h-100 border-0 rounded-0">
 						<div _ngcontent-c4="" class="card-title mb-1 p-3 d-flex">
 							<h5 class="card-header">HISTORIAL DE MOVIMIENTOS </h5>
+							<button type="button" class="btn btn-primary" onclick="window.history.back()">Volver</button>
 							<a _ngcontent-c4="" class="btn ml-auto p-0 text-lightning">
 								<i _ngcontent-c4="" class="fas fa-ellipsis-h"></i>
 							</a>
@@ -67,12 +68,20 @@
 														    <td _ngcontent-c4="" class="text-success">recibiste de {{p.cuenta_origen.usuario.username}}: ${{p.monto}} </td>
 														    <td _ngcontent-c4="" class="text-success"> </td>
 														{% endif %}
-														
-														
 														<td _ngcontent-c4="" class="actions">
 															<a href="#" type="button" class="btn btn-danger btn-sm">Detalles</a>
+															{% if p.cuenta_destino_id %}
+															<!-- Botón para agregar a favoritos -->
+															<a href="{% url 'transacciones:agregar_favorito' p.cuenta_destino_id %}" class="btn btn-sm btn-primary">
+																Favorito
+															</a>
+															{% else %}
+																<!-- Mostrar algún mensaje si no hay cuenta destino -->
+																<span class="text-muted"></span>
+															{% endif %}
 														</td>
-													</tr>
+														
+																											</tr>
 											{% endfor %} 
 										</tbody>
 									</table>

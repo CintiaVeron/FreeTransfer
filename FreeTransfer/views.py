@@ -58,6 +58,13 @@ def registro(request):
     return render(request, 'usuarios/registro.html', {'form': form})
 
 
+from django.http import HttpResponseRedirect
+
+def go_back(request):
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return HttpResponseRedirect(referer)
+    return HttpResponseRedirect('/')  # Redirige al inicio si no hay referer
 
 
 

@@ -29,6 +29,7 @@
 					<div _ngcontent-c4="" class="card h-100 border-0 rounded-0">
 						<div _ngcontent-c4="" class="card-title mb-1 p-3 d-flex">
 							<h5 class="card-header">HISTORIAL DE MOVIMIENTOS </h5>
+							<button type="button" class="btn btn-primary" onclick="window.history.back()">Volver</button>
 							<a _ngcontent-c4="" class="btn ml-auto p-0 text-lightning">
 								<i _ngcontent-c4="" class="fas fa-ellipsis-h"></i>
 							</a>
@@ -59,7 +60,7 @@
 														<td _ngcontent-c4="" class="text-success">{{p.tipo}}</td>
 														<td _ngcontent-c4="" class="text-success">{{p.monto}} </td>
 														<td _ngcontent-c4="" class="actions">
-															<a href="#" type="button" class="btn btn-danger btn-sm">Detalles</a>
+															<a href="{% url 'transacciones:Comprobante' p.id %}" type="button" class="btn btn-danger btn-sm">Detalles</a>
 														</td>
 													</tr>
 											{% endfor %} 

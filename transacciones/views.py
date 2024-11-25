@@ -26,6 +26,8 @@ from .forms import ModificacionMotivo
 from django.views.generic.edit import DeleteView 
 from django.views.generic.edit import CreateView
 from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+
 User = get_user_model()
 
 
@@ -68,7 +70,7 @@ def ingresar_dinero(request):
             cuenta.saldo += monto
             cuenta.save()
             Movimiento.objects.create(cuenta_origen=cuenta, cuenta_movimiento=cuenta, tipo="ingreso", monto=monto)
-            return redirect('transacciones:confirmacion_transferencia')  # Redirigir a la página principal o una página de confirmación
+            return redirect('transacciones:confirmacion_ingreso_dinero')  # Redirigir a la página principal o una página de confirmación
     else:
         form = IngresoDineroForm()
 
@@ -81,6 +83,7 @@ def ingresar_dinero(request):
 
 @login_required
 def realizar_transferencia(request):
+    context={}
     if request.method == 'POST':
         form = TransferenciaForm(request.POST)
         if form.is_valid():
@@ -109,16 +112,16 @@ def realizar_transferencia(request):
                 # Realizar la transferencia
             remitente_cuenta.saldo -= monto
             remitente_cuenta.save()
-
+            
             destinatario_cuenta.saldo += monto
             destinatario_cuenta.save()
 
                 # Guardar el movimiento para historial
-            Movimiento.objects.create(cuenta_origen=remitente_cuenta, cuenta_movimiento=remitente_cuenta,cuenta_destino=destinatario_cuenta, tipo="transferencia", monto=monto, motivo=motivo)
+            movimiento_origen = Movimiento.objects.create(cuenta_origen=remitente_cuenta, cuenta_movimiento=remitente_cuenta,cuenta_destino=destinatario_cuenta, tipo="transferencia", monto=monto, motivo=motivo)
             Movimiento.objects.create(cuenta_origen=remitente_cuenta, cuenta_movimiento=destinatario_cuenta,cuenta_destino=destinatario_cuenta, tipo="ingreso transferencia", monto=monto, motivo=motivo)
 
                 # Redirigir a una página de confirmación
-            return redirect('transacciones:confirmacion_transferencia')  # Redirigir a una página de confirmación
+            return redirect('transacciones:confirmacion_transferencia',movimiento_origen.id)  # Redirigir a una página de confirmación
             
                 
                 
@@ -130,8 +133,20 @@ def realizar_transferencia(request):
 
 
 
-def confirmacion_transferencia(request):
-    return render(request, 'confirmacion_transferencia.html')
+#def confirmacion_transferencia(request,movimiento_id):
+ #   context={}
+  #  movimiento= movimiento.objects.get(id=movimiento_id)
+   # context['movimiento']= movimiento
+    #return render(request, 'confirmacion_transferencia.html',context)
+def confirmacion_transferencia(request, movimiento_id):
+    # Obtener el objeto Movimiento basado en el movimiento_id
+    movimiento = get_object_or_404(Movimiento, id=movimiento_id)
+
+    # Pasar el objeto 'movimiento' al contexto para renderizarlo en la plantilla
+    return render(request, 'confirmacion_transferencia.html', {'movimiento': movimiento})
+
+def confirmacion_ingreso_dinero(request):
+    return render(request, 'confirmacion_ingreso_dinero.html')
 
 
 def listar_movimientos(request):
@@ -178,3 +193,7 @@ class MotivoCreateView(CreateView):
     template_name = 'motivo_nuevo.html'  # La plantilla que se usará para el formulario
     fields = ['nombre']  # Campos que estarán disponibles en el formulario
     success_url = reverse_lazy('transacciones:listar_motivos')  # URL a la que se redirige después de la creación
+
+def Comprobante(request, pk):
+    movimiento = get_object_or_404(Movimiento, id=pk)
+    return render(request, 'Comprobante.html',{'movimiento': movimiento})

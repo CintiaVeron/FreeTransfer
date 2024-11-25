@@ -33,6 +33,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('registro/', views.registro, name='registro'),
+    path('go_back/', views.go_back, name='go_back'),
+
 
 
     # Incluir las rutas de la app transacciones

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block contenido %}
+  <!-- COMIENZO DEL SECTOR DE TABLA DE FAVORITOS  -->
+
+  {% if messages %}
+  <div class="alert alert-success" role="alert">
+      {% for message in messages %}
+          <p>{{ message }}</p>
+      {% endfor %}
+  </div>
+  {% endif %}
+
+  <div id="contenido"  class="pages-container-fluid pt-2 pb-2 pl-5 pr-5">
+
+    <div class="col-12 col-xl-12 mb-4 align-items-stretch">
+        <div class="card h-100 border-0 rounded">
+            <div class="card-title mb-1">                                 
+            
+                <div class="table-responsive-md">
+                    <div _ngcontent-c4="" class="table-responsive">
+                      <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">NOMBRE</th>
+                                <th style="width:16%;">APELLIDO</th>
+                                <th class="actions" style="width:3%;">Transferir</th>
+                                <th class="actions" style="width:3%;">Eliminar</th>
+  
+                            </tr>
+                        </thead>
+                        <tbody class="no-border-x">
+                            {% if favoritos %}
+                                {% for fav in favoritos %}
+                                <tr>
+                                    <td>{% if fav.usuario_favorito.first_name %}{{ fav.usuario_favorito.first_name|capfirst }}{% else %}USERNAME: {{ fav.usuario_favorito.username }} {% endif %}</td>
+                                    <td>{{ fav.usuario_favorito.last_name|capfirst }}</td>
+                                    <td class="actions">
+                                        <a href="{% url 'transacciones:realizar_transferencia' fav.usuario_favorito.username %}" class="btn btn-primary btn-sm">
+                                          <span class="icon-checkmark"></span></a>
+                                    </td>
+                                    <td class="actions">
+                                        <a href="{% url 'usuarios:eliminar_favorito' fav.usuario_favorito.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario de tu lista de favoritos?');"><span class="icon-cross"></span></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                            <tr>
+                                <!-- Espaciamos el mensaje para que abarque las columnas -->
+                                <td colspan="5" class="text-center text-muted" style="font-size: 1.5rem; font-weight: bold;">No posee usuarios favoritos</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    
+                        
+                    </div>
+                </div>
+                <div  class="card-footer">
+                  <div  class="legend d-flex justify-content-center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}
+
+  
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+  <script>
+    const btn = document.querySelector('#menu--btn');
+    const menu = document.querySelector('#sidemenu');
+    btn.addEventListener('click', e => {
+      menu.classList.toggle("menu-expanded");
+      menu.classList.toggle("menu-collapsed");
+
+      document.querySelector('body').classList.toggle('body-expanded');
+    });
+  </script>
+</body>
+</html>

@@ -400,3 +400,8 @@
 .icon-html-five:before {
   content: "\eae4";
 }
+
+
+.logo-transparente {
+    background-color: transparent;  /* Fondo transparente */
+}

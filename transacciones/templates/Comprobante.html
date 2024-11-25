@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<main class="container-body">
+  <div id="contenido" class="pages-container-fluid pt-4 pb-4 pl-4 pr-4">
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <div class="card border-0 rounded-0 text-center">
+          <div class="card-body">
+            <h5 class="card-title">este es el comprobante</h5>
+            
+            <h1>Comprobante de Transferencia</h1>
+            <p><strong>ID del Movimiento:</strong> {{ movimiento.id }}</p>
+            <p><strong>Usuario Destinatario:</strong> {{ movimiento.cuenta_destino.usuario.username }}</p>
+            <p><strong>Monto Transferido:</strong> ${{ movimiento.monto }}</p>
+            <p><strong>Fecha de Transferencia:</strong> {{ movimiento.fecha }}</p>
+            <p class="card-text">Gracias por utilizar FreeTransfer.</p>
+            <a href="{% url 'home' %}" class="btn btn-primary">Volver al inicio</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+

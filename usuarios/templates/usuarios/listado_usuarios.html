@@ -26,7 +26,8 @@
 				<div _ngcontent-c4="" class="col-12 col-xl-12 mb-4 align-items-stretch">
 					<div _ngcontent-c4="" class="card h-100 border-0 rounded-0">
 						<div _ngcontent-c4="" class="card-title mb-1 p-3 d-flex">
-							<h5 class="card-header">LISTADO DE usuarios </h5> 
+							<h5 class="card-header">LISTADO DE USUARIOS</h5>
+							<button type="button" class="btn btn-primary" onclick="window.history.back()">Volver</button>
 							<a _ngcontent-c4="" class="btn ml-auto p-0 text-lightning">
 								<i _ngcontent-c4="" class="fas fa-ellipsis-h"></i>
 							</a>
@@ -53,20 +54,22 @@
 														<td>
 														 {% if p.is_active %}
 															<td _ngcontent-c4="" class="actions">
-															<a href="{% url 'usuarios:activar_usuario' p.id %}" type="button" class="btn btn-danger btn-sm">Desactivar</a></td>
+															<a href="{% url 'usuarios:activar_usuario' p.id %}" type="button" class="btn btn-primary btn-sm">Desactivar</a></td>
+
 														{% else %}
 															<td _ngcontent-c4="" class="actions">
-															<a href="{% url 'usuarios:activar_usuario' p.id %}" type="button" class="btn btn-danger btn-sm">Activar</a></td>
+															<a href="{% url 'usuarios:activar_usuario' p.id %}" type="button"class="btn btn-primary btn-sm">Activar</a></td>
+
 														{% endif %}
 														
 														<td _ngcontent-c4="" class="actions">
-															<a href="{% url 'usuarios:editar_perfil' p.id %}" type="button" class="btn btn-danger btn-sm">EDITAR</a>
+															<a href="{% url 'usuarios:editar_perfil' p.id %}" type="button" class="btn btn-primary btn-sm">EDITAR</a>
 														</td>
 														<td _ngcontent-c4="" class="actions">
-															<a href="{% url 'usuarios:eliminar_usuario' p.id %}" type="button" class="btn btn-danger btn-sm">ELIMINAR</a>
+															<a href="{% url 'usuarios:eliminar_usuario' p.id %}" type="button" class="btn btn-primary btn-sm">ELIMINAR</a>
 														</td>
 														<td _ngcontent-c4="" class="actions">
-															<a href="{% url 'usuarios:movimiento_por_usuario' p.id %}" type="button" class="btn btn-danger btn-sm">MOVIMIENTOS</a>
+															<a href="{% url 'usuarios:movimiento_por_usuario' p.id %}" type="button" class="btn btn-primary btn-sm">MOVIMIENTOS</a>
 														</td>
 														</td>
 

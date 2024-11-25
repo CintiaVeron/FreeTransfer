@@ -16,6 +16,7 @@
               {% csrf_token %}
               {{ form.as_p }}  <!-- Renderiza el formulario automáticamente -->
               <button type="submit" class="btn btn-primary">Confirmar Ingreso</button>
+              <button type="button" class="btn btn-primary" onclick="window.history.back()">Volver</button>
             </form>
           </div>
         </div>

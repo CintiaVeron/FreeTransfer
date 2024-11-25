@@ -31,6 +31,7 @@
     <link rel="stylesheet" type="text/css" href='{% static "style.css" %}'>
 
   <title>FreeTransfer</title>
+  
 
  
 </head>
@@ -58,7 +59,11 @@
    
 
     <div id="profile">
-      <div id="photo"><img src="{% static 'images/foto_user.jpg' %}" alt=""></div>
+      <img 
+            src="{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'user_default.png' %}{% endif %}" 
+            class="rounded-circle img-fluid" 
+            style="width: 80px; height: 80px; object-fit: cover;" 
+            alt="User Image">
       <div id=name><span>{{user.username}}</span></div>
       
     </div>  
@@ -75,14 +80,7 @@
         </a>
         </div>
  
-      <div class="item">
-        <a href="#">
-          <div class="icon">
-                 <img src="{% static 'iconos/billete.png' %}"></div>
-                <div class="title"><span>Tu dinero</span></div>
-                
-            </a>
-      </div>
+     
 
       <div class="item">
         <a href="{% url 'transacciones:listar_movimientos' %}">
@@ -105,21 +103,22 @@
         <div class="item">
          <a href="{% url 'transacciones:listar_motivos' %}">
             <div class="icon"><img src="{% static 'iconos/lista.png' %}"></div>
-            <div class="title"><span>LISTAR MOTIVOS</span></div>
+            <div class="title"><span>Listar Motivos</span></div>
           </a>
         </div>
         <div class="item">
          <a href="{% url 'usuarios:listado_usuarios' %}">
             <div class="icon"><img src="{% static 'iconos/lista.png' %}"></div>
-            <div class="title"><span>LISTAR USUARIOS</span></div>
+            <div class="title"><span>Listar Usuarios</span></div>
           </a>
         </div>
         {% endif %}
       <div class="item">
-        <a href="#">
+        <a href="{% url 'login' %}">
           <div class="icon">
             <img src="{% static 'iconos/identificacion.png' %}"></div>
           <div class="title"><span>Cerrar Sesion</span></div>
+          
         </a>
       </div>
       
@@ -140,6 +139,8 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'home' %}">Home</a>
       </li>
+        <a class="nav-link" href="{% url 'usuarios:favoritos'%}">Favoritos</a>
+      </li>
       <li class="nav-item">
         <a href="#">
       </li>
@@ -155,8 +156,10 @@
      
     </ul>
       <div class="nav-item dropdown pr-2 pl-5">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{user.username}}
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white; font-family: 'Arial', sans-serif; font-weight: bold;">
+    {{ user.username }}
+</a>
+
         </a>
         <div class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
           <a class="dropdown-item text-light " href="{% url 'usuarios:editar_perfil' user.id %}">Editar Perfil</a>
@@ -165,7 +168,7 @@
            <form method="post" action="{% url 'logout' %}">
               {% csrf_token %}
               <input type="hidden" name="next" value="{% url 'login' %}">
-              <button type="submit">Cerrar sesión</button>
+              <button class="dropdown-item text-light " type="submit">Cerrar sesión</button>
           </form>
 
         </div>

@@ -400,3 +400,13 @@
 .icon-html-five:before {
   content: "\eae4";
 }
+
+
+.logo-transparente {
+            width: 300px;  /* Aumentar el tamaño del logo */
+            height: auto;  /* Mantener la proporción */
+            border: 2px solid #007bff; /* Borde azul para resaltar */
+            padding: 10px;  /* Espaciado interno */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
+        }

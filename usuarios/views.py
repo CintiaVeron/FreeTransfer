@@ -6,8 +6,7 @@ from transacciones.models import Cuenta, Movimiento
 from django.contrib.auth.forms import UserCreationForm
 from .models import Usuario, MotivoTransferencia
 from transacciones.models import Cuenta
-
-
+from django.views.generic import TemplateView, UpdateView, DetailView
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
@@ -19,7 +18,8 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import DeleteView 
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
-
+from .models import UsuarioFavorito
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 
@@ -187,3 +187,66 @@ def Listar_MovimientosPorUsuario(request, pk):
 
 
 
+from transacciones.models import Cuenta  # Modelo donde resides las cuentas
+
+@login_required
+def agregar_favorito(request, cuenta_destino_id):
+    # Obtener la cuenta destino
+    cuenta_destino = get_object_or_404(Cuenta, id=cuenta_destino_id)
+
+    # Obtener el usuario asociado a la cuenta destino
+    usuario_destino = cuenta_destino.usuario
+
+    # Validar que el usuario destino no sea el usuario logueado
+    if usuario_destino == request.user:
+        messages.error(request, "No puedes agregarte a ti mismo como favorito.")
+        return redirect(request.META.get('HTTP_REFERER', '/'))  # Cambia esta URL según tu ruta de movimientos
+
+    # Validar que no se haya agregado previamente como favorito
+    favorito_existente = UsuarioFavorito.objects.filter(
+        usuario_origen=request.user,
+        usuario_favorito=usuario_destino
+    ).exists()
+
+    if favorito_existente:
+        messages.info(request, "El usuario ya está en tu lista de favoritos.")
+    else:
+        # Crear el nuevo favorito
+        UsuarioFavorito.objects.create(
+            usuario_origen=request.user,
+            usuario_favorito=usuario_destino
+        )
+        messages.success(request, "Usuario agregado a tus favoritos con éxito.")
+
+    return redirect(request.META.get('HTTP_REFERER', '/'))  # Cambia esta URL según la lista de movimientos
+
+
+
+@login_required
+def eliminar_favorito(request, usuario_favorito_id):
+    # Obtener el favorito a eliminar
+    favorito = get_object_or_404(UsuarioFavorito, usuario_favorito_id=usuario_favorito_id, usuario_origen=request.user)
+
+    # Eliminar el usuario favorito
+    favorito.delete()
+
+    messages.success(request, "El usuario ha sido eliminado de tu lista de favoritos.")
+    
+    # Redirigir de vuelta a la lista de favoritos
+    return redirect('usuarios:favoritos')  # Asegúrate de que esta URL sea correcta
+# @login_required
+class Listar(TemplateView):
+    template_name = 'usuarios/favoritos.html'
+    # model = UsuarioFavorito
+    context_object_name = "usuario"
+    # paginate_by = 5
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        # Obtener el usuario actual basado en el pk de la URL
+        # usuario_origen_id = self.kwargs.get('pk')
+        # usuario = get_object_or_404(Usuario, id=usuario_origen_id)
+        usuario = self.request.user
+        # Filtrar favoritos para este usuario
+        ctx['favoritos'] = UsuarioFavorito.objects.filter(usuario_origen=usuario)
+        ctx["titulo"] = "LISTA DE FAVORITOS"
+        return ctx
