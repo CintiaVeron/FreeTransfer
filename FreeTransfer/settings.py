@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from django.urls import reverse_lazy
+from dotenv import load_dotenv
+
+
+# Cargar las variables del archivo .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -91,20 +96,26 @@ WSGI_APPLICATION = 'FreeTransfer.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# Configuración del proyecto
+SECRET_KEY = os.getenv('SECRET_KEY')
 
+if not SECRET_KEY:
+    raise ValueError("La SECRET_KEY no está definida en el archivo .env")
+
+# Configuración de la base de datos usando variables del .env
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'freetransfer1',  # Nombre de tu base de datos
-        'USER': 'postgres',    # Usuario de PostgreSQL
-        'PASSWORD': '12345',  # Contraseña del usuario
-        'HOST': 'localhost',  # O la IP de tu servidor de PostgreSQL
-        'PORT': '5433',  # Puerto de PostgreSQL, 5432 por defecto
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
-
-
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG') == 'True'
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
